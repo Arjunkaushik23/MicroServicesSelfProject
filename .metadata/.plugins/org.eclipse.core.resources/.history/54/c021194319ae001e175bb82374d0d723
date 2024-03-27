@@ -1,0 +1,25 @@
+package com.company.springdatajpa.enitity;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table
+public class Employee {
+
+	private long id;
+	private String sku;
+	private String productName;
+	private String description;
+	private BigDecimal price;
+	private boolean active;
+	private String imageUrl;
+	private LocalDateTime dataCreated;
+	private LocalDateTime lastUpdated;
+	
+	
+	
+}

@@ -1,0 +1,13 @@
+server:
+  port: 9094
+  
+spring:
+  application:
+    name: CONFIG-SERVER
+    
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Arjunkaushik23/micro-configurations-service
+          clone-on-start: true

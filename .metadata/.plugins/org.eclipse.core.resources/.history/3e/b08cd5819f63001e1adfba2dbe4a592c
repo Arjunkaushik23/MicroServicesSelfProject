@@ -1,0 +1,73 @@
+package com.user.service.com.first.user.service.services.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.user.service.com.first.user.service.entities.Hotel;
+import com.user.service.com.first.user.service.entities.Rating;
+import com.user.service.com.first.user.service.entities.User;
+import com.user.service.com.first.user.service.exceptions.ResourceNotFoundException;
+import com.user.service.com.first.user.service.repositories.UserRepository;
+import com.user.service.com.first.user.service.services.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private RestTemplate restTemplate;
+
+	private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+	@Override
+	public User saveUser(User user) {
+		String string = UUID.randomUUID().toString();
+		user.setUserId(string);
+		User savedUser = this.userRepository.save(user);
+		return savedUser;
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		List<User> findAllUsers = this.userRepository.findAll();
+		return findAllUsers;
+	}
+
+	@Override
+	public User getUserById(String id) {
+
+		User user = this.userRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("User Associated with this id could not be found" + id));
+		@SuppressWarnings("unchecked")
+		ArrayList<Rating> ratingBUserId = restTemplate
+				.getForObject("http://localhost:9093/ratings/users/" + user.getUserId(), ArrayList.class);
+		logger.info("{} ", ratingBUserId);
+		
+		List<Rating> collectedRatingList = ratingBUserId.stream().map(rating ->{
+			// 
+			ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://localhost:8082/user/"+ user.getUserId(), Hotel.class);
+			Rating[] ratingArray = forEntity.getBody();
+			Arrays.
+			return rating;
+		}).collect(Collectors.toList());
+		
+		user.setRating(collectedRatingList);
+		
+		user.setRating(ratingBUserId);
+		return user;
+
+	}
+
+}

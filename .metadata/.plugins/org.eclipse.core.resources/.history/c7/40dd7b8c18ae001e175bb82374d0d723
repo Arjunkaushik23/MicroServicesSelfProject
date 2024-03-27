@@ -1,0 +1,5 @@
+package com.company.springdatajpa.enitity;
+
+public class Entity {
+
+}

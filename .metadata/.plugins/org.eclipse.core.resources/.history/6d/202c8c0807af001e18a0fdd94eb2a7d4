@@ -1,0 +1,39 @@
+package com.company.springdatajpa.repositories;
+
+import java.math.BigDecimal;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.company.springdatajpa.enitity.Product;
+
+@SpringBootTest
+public class ProductRepositoryTest {
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	void saveMethod() {
+		// create product
+		Product product = new Product();
+		product.setProductName("Product number 1");
+		product.setDescription("product 1 description");
+		product.setSku("100ABC");
+		product.setPrice(new BigDecimal(100));
+		product.setActive(true);
+		product.setImageUrl("image.png");
+		
+		// save product
+		Product savedProduct = productRepository.save(product);
+		
+		// display product information
+		System.out.println(savedProduct.getId());
+		System.out.println(product.toString());
+
+		
+		
+	}
+	
+	
+
+}
